@@ -5,8 +5,33 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>canvas</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>canvas</h1>
+    <div id="canvas"></div>
+    <script>
+      canvas.onclick = (e) => {
+        console.log(e.clientX);
+        console.log(e.clientY);
+        //console.log调试大法
+        let div = document.createElement("div");
+        //让文档创建一个标签
+        div.style.position = "absolute";
+        //让div出现在（X,Y）的位置，绝对定位
+        div.style.left = e.clientX + "px";
+        div.style.top = e.clientY + "px";
+
+        div.style.width = "6px";
+        div.style.height = "6px";
+        div.style.marginLeft = "-3px";
+        div.style.marginTop = "-3px";
+        //调成鼠标出现在方形中间
+        div.style.borderRadius = "50%";
+        div.style.backgroundColor = "black";
+
+        canvas.appendChild(div);
+        //让div出现在屏幕上
+      };
+    </script>
   </body>
 </html>
