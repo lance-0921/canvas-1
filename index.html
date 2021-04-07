@@ -13,36 +13,53 @@
     通过JS获取屏幕宽高，然后确定canvas的宽、高 -->
     <script>
       //画线
-      var canvas = document.getElementById("canvas");
+      let canvas = document.getElementById("canvas");
       canvas.width = document.documentElement.clientWidth;
       canvas.height = document.documentElement.clientHeight;
       // 需要获取文档的宽、高。document.body.clientWidth、document.body.clientHeight，只能获取body的宽高，高度是内容的高度，不是屏幕的高度。
       var ctx = canvas.getContext("2d");
       ctx.fillStyle = "black";
-      ctx.strokeStyle = "none";
-
+      ctx.strokeStyle = "black";
       let painting = false;
+      let last;
+      ctx.lineWidth = 5;
+      ctx.lineCap = "round";
+      //将线段的连接点变成圆的，linejoin实现不了
+      function drawLine(x1, y1, x2, y2) {
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+      }
 
-      canvas.onmousedown = () => {
-        painting = true;
-      };
-
-      canvas.onmousemove = (e) => {
-        if (painting === true) {
-          //获取鼠标坐标，在鼠标坐标处画点
-          //ctx.fillRect(e.clientX - 5, e.clientY - 5, 10, 10);
+      var isTouchDevice = "ontouchstart" in document.documentElement;
+      console.log(isTouchDevice);
+      //JS检查是否支持触屏,链接：https://www.jianshu.com/p/94b6b6540e72;
+      if (isTouchDevice) {
+        canvas.ontouchmove = (e) => {
+          let x = e.touches[0].clientX;
+          let y = e.touches[0].clientY;
+          //监听touch的坐标
           ctx.beginPath();
-          ctx.arc(e.clientX, e.clientY, 10, 0, 2 * Math.PI);
+          ctx.arc(x, y, 10, 0, 2 * Math.PI);
           ctx.stroke();
           ctx.fill();
-        } else {
-          console.log("什么都不做");
-        }
-      };
-
-      canvas.onmouseup = () => {
-        painting = false;
-      };
+        };
+      } else {
+        canvas.onmousedown = (e) => {
+          painting = true;
+          last = [e.clientX, e.clientY];
+        };
+        canvas.onmousemove = (e) => {
+          if (painting === true) {
+            drawLine(last[0], last[1], e.clientX, e.clientY);
+            last = [e.clientX, e.clientY];
+          }
+        };
+        canvas.onmouseup = () => {
+          painting = false;
+        };
+      }
     </script>
   </body>
 </html>
