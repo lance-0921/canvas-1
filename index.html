@@ -40,14 +40,24 @@
       console.log(isTouchDevice);
       //JS检查是否支持触屏,链接：https://www.jianshu.com/p/94b6b6540e72;
       if (isTouchDevice) {
+        //通过检测是否touch来画线
+        canvas.ontouchstart = (e) => {
+          painting = true;
+          last = [e.touches[0].clientX, e.touches[0].clientY];
+        };
         canvas.ontouchmove = (e) => {
-          let x = e.touches[0].clientX;
-          let y = e.touches[0].clientY;
-          //监听touch的坐标
-          ctx.beginPath();
-          ctx.arc(x, y, 10, 0, 2 * Math.PI);
-          ctx.stroke();
-          ctx.fill();
+          if (painting === true) {
+            drawLine(
+              last[0],
+              last[1],
+              e.touches[0].clientX,
+              e.touches[0].clientY
+            );
+            last = [e.touches[0].clientX, e.touches[0].clientY];
+          }
+        };
+        canvas.ontouchend = () => {
+          painting = false;
         };
       } else {
         canvas.onmousedown = (e) => {
@@ -59,9 +69,6 @@
             drawLine(last[0], last[1], e.clientX, e.clientY);
             last = [e.clientX, e.clientY];
           }
-        };
-        canvas.onmouseup = () => {
-          painting = false;
         };
       }
     </script>
