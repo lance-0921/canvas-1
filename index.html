@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0，minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"
+    />
     <title>canvas</title>
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -24,7 +27,8 @@
       let last;
       ctx.lineWidth = 5;
       ctx.lineCap = "round";
-      //将线段的连接点变成圆的，linejoin实现不了
+      //线条末端形状由lineCap属性控制（值：butt平头、round圆头、square方头）
+      //线条相交的方式由lineJoin属性控制（值：round圆交、bevel斜交、miter斜接）链接：https://blog.csdn.net/weixin_43960657/article/details/89309983
       function drawLine(x1, y1, x2, y2) {
         ctx.beginPath();
         ctx.moveTo(x1, y1);
